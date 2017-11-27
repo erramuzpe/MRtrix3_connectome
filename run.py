@@ -361,8 +361,8 @@ def runSubject(bids_dir, label, output_prefix):
     run.command('mrtransform ' + parc_image_path + ' AAL.mif -linear MNI_to_T1_MRtrix.mat '
                 '-template T1_registered.mif -interp nearest')
     file.delTemporary('MNI_to_T1_MRtrix.mat')
-    run.command('labelconvert AAL.mif ' + parc_lut_file + ' ' + mrtrix_lut_file + ' parc.mif')
-    file.delTemporary('AAL.mif')
+    #run.command('labelconvert AAL.mif ' + parc_lut_file + ' ' + mrtrix_lut_file + ' parc.mif')
+    #file.delTemporary('AAL.mif')
 
   else:
     app.error('Unknown parcellation scheme requested: ' + app.args.parcellation)
@@ -373,7 +373,8 @@ def runSubject(bids_dir, label, output_prefix):
   #   mean edge weight of 1,000 streamlines
   # A smaller FOD amplitude threshold of 0.06 (default 0.1) is used for tracking due to the use of the msmt_csd
   #   algorithm, which imposes a hard rather than soft non-negativity constraint
-  num_nodes = int(image.statistic('parc.mif', 'max'))
+  #num_nodes = int(image.statistic('parc.mif', 'max'))
+  num_nodes = 116
   num_streamlines = 1000 * num_nodes * num_nodes
   if app.args.streamlines:
     num_streamlines = app.args.streamlines
@@ -394,7 +395,7 @@ def runSubject(bids_dir, label, output_prefix):
 
   # Step 17: Generate the connectome
   #          Only provide the standard density-weighted connectome for now
-  run.command('tck2connectome tractogram.tck parc.mif connectome.csv -tck_weights_in weights.csv')
+  run.command('tck2connectome tractogram.tck AAL.mif connectome.csv -tck_weights_in weights.csv')
   file.delTemporary('weights.csv')
 
   # Move necessary files to output directory
