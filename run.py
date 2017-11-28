@@ -396,6 +396,7 @@ def runSubject(bids_dir, label, output_prefix):
   run.function(shutil.copy, 'tractogram.tck', os.path.join(output_dir, 'connectome', label + 'tractogram.tck'))
   run.function(shutil.copy, 'weights.csv', os.path.join(output_dir, 'connectome', label + 'weights.csv'))
   run.function(shutil.copy, 'FOD_WM.mif', os.path.join(output_dir, 'connectome', label + 'FOD_WM.mif'))
+  run.function(shutil.copy, 'AAL.mif', os.path.join(output_dir, 'connectome', label + 'AAL.mif'))
   # Step 17: Generate the connectome
   #          Only provide the standard density-weighted connectome for now
   run.command('tck2connectome tractogram.tck AAL.mif connectome.csv -tck_weights_in weights.csv')
