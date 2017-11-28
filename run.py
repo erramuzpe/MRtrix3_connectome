@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+#import sys
+#sys.path.append('/home/asier/git/mrtrix3/lib')
 import glob, json, math, os, shutil
 from distutils.spawn import find_executable
 from mrtrix3 import app, file, fsl, image, path, run
@@ -392,7 +393,9 @@ def runSubject(bids_dir, label, output_prefix):
     mu = float(f.read())
   run.command('tckmap tractogram.tck -tck_weights_in weights.csv -template FOD_WM.mif -precise - | '
               'mrcalc - ' + str(mu) + ' -mult tdi.mif')
-
+  run.function(shutil.copy, 'tractogram.tck', os.path.join(output_dir, 'connectome', label + 'tractogram.tck'))
+  run.function(shutil.copy, 'weights.csv', os.path.join(output_dir, 'connectome', label + 'weights.csv'))
+  run.function(shutil.copy, 'FOD_WM.mif', os.path.join(output_dir, 'connectome', label + 'FOD_WM.mif'))
   # Step 17: Generate the connectome
   #          Only provide the standard density-weighted connectome for now
   run.command('tck2connectome tractogram.tck AAL.mif connectome.csv -tck_weights_in weights.csv')
